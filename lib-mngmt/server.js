@@ -23,19 +23,19 @@ const bookSchema = new mongoose.Schema({
   author: String,
 });
 
-const Book = mongoose.model('books', bookSchema);//naya model create kar diya hai representing any document inside the collection books under the library database
+const Book = mongoose.model('books', bookSchema); // Model representing documents inside the 'books' collection under the 'library' database
 
 // API Endpoint to retrieve all books
-  app.get('/api/books', async (req, res) => {
-    try {
-      const books = await Book.find({}); //ye saare documents le aayega books collection present in the library databse
-      res.json(books); //json mein convert kar rha hai
-    } catch (err) {
-      res.status(500).json({ error: 'Error retrieving books from the database' });
-    }
-  });
+app.get('/api/books', async (req, res) => {
+  try {
+    const books = await Book.find({}); // Retrieve all documents from the 'books' collection in the 'library' database
+    res.json(books); // Return JSON response
+  } catch (err) {
+    res.status(500).json({ error: 'Error retrieving books from the database' });
+  }
+});
 
-//API Endpoint to add a new book
+// API Endpoint to add a new book
 app.post('/api/books', async (req, res) => {
   const { title, author } = req.body;
 
@@ -57,7 +57,7 @@ app.post('/api/books', async (req, res) => {
   }
 });
 
-//API endpoint for updating the book as per the id
+// API endpoint for updating a book by ID
 app.put('/api/books/:id', async (req, res) => {
   const { id } = req.params;
   const { title, author } = req.body;
@@ -71,7 +71,7 @@ app.put('/api/books/:id', async (req, res) => {
     }
 
     // Update book details
-    book.title = title || book.title; //ye set kardeta hai nayi value se agar book.title naya nahi provide kiya toh nahi toh as it is
+    book.title = title || book.title; // Set the new value if provided, otherwise keep the existing value
     book.author = author || book.author;
     await book.save();
 
@@ -80,8 +80,6 @@ app.put('/api/books/:id', async (req, res) => {
     res.status(500).json({ error: 'Error updating book details' });
   }
 });
-
-
 
 // Start server
 app.listen(PORT, () => {
